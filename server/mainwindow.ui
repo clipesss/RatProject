@@ -6,39 +6,337 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>330</y>
-      <width>80</width>
-      <height>24</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1200</width>
+      <height>500</height>
      </rect>
     </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
+    <widget class="QWidget" name="clients">
+     <property name="styleSheet">
+      <string notr="true">QWidget#clients
+{
+background-color: rgba(0,0,0,240);
+}</string>
+     </property>
+     <widget class="QWidget" name="clientsWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>1201</width>
+        <height>461</height>
+       </rect>
+      </property>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>340</y>
+         <width>80</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="optionsWidget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>180</y>
+         <width>111</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget#optionsWidget
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+}</string>
+       </property>
+       <widget class="QPushButton" name="filesButton">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>files</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tablesWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1200</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="ipText">
+       <property name="geometry">
+        <rect>
+         <x>1</x>
+         <y>0</y>
+         <width>161</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#ipText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>IP Address</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="pcNameText">
+       <property name="geometry">
+        <rect>
+         <x>161</x>
+         <y>0</y>
+         <width>121</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#pcNameText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Pc Name</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="userNameText">
+       <property name="geometry">
+        <rect>
+         <x>281</x>
+         <y>0</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#userNameText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>User Name</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="osInstallText">
+       <property name="geometry">
+        <rect>
+         <x>391</x>
+         <y>0</y>
+         <width>141</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#osInstallText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>OS install date</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="osText">
+       <property name="geometry">
+        <rect>
+         <x>531</x>
+         <y>0</y>
+         <width>181</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#osText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Operating System</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="countryText">
+       <property name="geometry">
+        <rect>
+         <x>851</x>
+         <y>0</y>
+         <width>121</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#countryText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Country</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="osLanguageText">
+       <property name="geometry">
+        <rect>
+         <x>711</x>
+         <y>0</y>
+         <width>141</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#osLanguageText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>OS Language</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="camText">
+       <property name="geometry">
+        <rect>
+         <x>971</x>
+         <y>0</y>
+         <width>80</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#camText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Cam</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="clientVerText">
+       <property name="geometry">
+        <rect>
+         <x>1050</x>
+         <y>0</y>
+         <width>150</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#clientVerText
+{
+font: 600 14pt &quot;Segoe UI&quot;;
+color: rgb(99, 180, 181);
+
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Client Build Ver</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

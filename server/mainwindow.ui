@@ -94,7 +94,7 @@ border-radius: 10px;
          <x>580</x>
          <y>200</y>
          <width>181</width>
-         <height>121</height>
+         <height>31</height>
         </rect>
        </property>
        <widget class="QPushButton" name="showC">
@@ -107,46 +107,7 @@ border-radius: 10px;
          </rect>
         </property>
         <property name="text">
-         <string>Показать все файлы диска C.</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="showD">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>30</y>
-          <width>181</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Показать все файлы диска D.</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="deleteFile">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>60</y>
-          <width>181</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Удалить файл.</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="copyFile">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>90</y>
-          <width>181</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Копировать файл.</string>
+         <string>File Explorer</string>
         </property>
        </widget>
       </widget>
@@ -408,7 +369,7 @@ background-color: rgba(0,0,0,240);
        <rect>
         <x>0</x>
         <y>39</y>
-        <width>601</width>
+        <width>1201</width>
         <height>461</height>
        </rect>
       </property>
@@ -435,7 +396,7 @@ background:rgba(0,0,0,0);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>585</width>
+         <width>1189</width>
          <height>459</height>
         </rect>
        </property>
@@ -446,6 +407,110 @@ background:rgba(0,0,0,0);
 }</string>
        </property>
       </widget>
+     </widget>
+     <widget class="QLineEdit" name="searchPath">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="getPath">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>0</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>GetTree</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="createFile">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Create</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteFile">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>0</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete File</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteDir">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>0</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete Dir</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteDir_2">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>0</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Get Folders y Files</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="copyFile">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>0</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Copy File</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="inputFile">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>0</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Input File to Client</string>
+      </property>
      </widget>
     </widget>
    </widget>

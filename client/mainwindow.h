@@ -34,6 +34,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QTcpSocket *socket;
-    QString fullPath;
+    QString SelectedPath;
 };
 #endif // MAINWINDOW_H

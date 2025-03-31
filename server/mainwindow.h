@@ -26,17 +26,29 @@ private slots:
     void AuthClientToTable(QTcpSocket *socket);
     void on_pushButton_clicked();
     void getClientInformation(QTcpSocket *socket);
-    void workWithCFiles();
+    void workWithFiles();
     void on_filesButton_clicked();
 
     void on_showC_clicked();
+
+    void on_getPath_clicked();
+
+    void on_deleteFile_clicked();
+
+    void on_deleteDir_clicked();
+
+    void on_createFile_clicked();
+
+    void on_deleteDir_2_clicked();
+
+    void on_copyFile_clicked();
 
 private:
     Ui::MainWindow *ui;
     QTcpServer *server;
     QTcpSocket *client;
 
-    QString cFiles;
+    QString Files;
 
     int clientsCounter = 0;
     int YForLabel = 0;

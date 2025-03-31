@@ -9,7 +9,9 @@
 #include <QtMultimedia/QMediaDevices>
 #include <QtMultimedia>
 #include <QFile>
-
+#include <QListWidgetItem>
+#include <iostream>
+#include <string.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,11 +29,11 @@ public:
 
 private slots:
     void ClientStartup();
-
     void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     QTcpSocket *socket;
+    QString fullPath;
 };
 #endif // MAINWINDOW_H

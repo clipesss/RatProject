@@ -5,7 +5,8 @@
 #include <QtNetwork/QTcpServer>
 #include <QtNetwork/QTcpSocket>
 #include <QLabel>
-
+#include <QFile>
+#include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -25,16 +26,19 @@ private slots:
     void AuthClientToTable(QTcpSocket *socket);
     void on_pushButton_clicked();
     void getClientInformation(QTcpSocket *socket);
+    void workWithCFiles();
+    void on_filesButton_clicked();
+
+    void on_showC_clicked();
 
 private:
     Ui::MainWindow *ui;
     QTcpServer *server;
     QTcpSocket *client;
 
-    QString pcName;
+    QString cFiles;
 
     int clientsCounter = 0;
-
     int YForLabel = 0;
 
     QLabel *pcNameLabel;

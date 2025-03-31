@@ -48,8 +48,8 @@ background-color: rgba(0,0,0,240);
       <widget class="QPushButton" name="pushButton">
        <property name="geometry">
         <rect>
-         <x>580</x>
-         <y>340</y>
+         <x>1030</x>
+         <y>370</y>
          <width>80</width>
          <height>24</height>
         </rect>
@@ -85,6 +85,68 @@ border-radius: 10px;
         </property>
         <property name="text">
          <string>files</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="filesWidget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>200</y>
+         <width>181</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="showC">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>181</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Показать все файлы диска C.</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="showD">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>181</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Показать все файлы диска D.</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="deleteFile">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>181</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Удалить файл.</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="copyFile">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>90</y>
+          <width>181</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Копировать файл.</string>
         </property>
        </widget>
       </widget>
@@ -334,7 +396,58 @@ border: 1px solid rgb(99, 180, 181);
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="consoleForC">
+     <property name="styleSheet">
+      <string notr="true">QWidget#consoleForC
+{
+background-color: rgba(0,0,0,240);
+}</string>
+     </property>
+     <widget class="QScrollArea" name="scrollAreaC">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>39</y>
+        <width>601</width>
+        <height>461</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QScrollArea#scrollArea
+{
+background:rgba(0,0,0,0);
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>585</width>
+         <height>459</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget#scrollAreaWidgetContents
+{
+background:rgba(0,0,0,0);
+}</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>

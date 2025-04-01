@@ -45,26 +45,13 @@ background-color: rgba(0,0,0,240);
         <height>461</height>
        </rect>
       </property>
-      <widget class="QPushButton" name="pushButton">
-       <property name="geometry">
-        <rect>
-         <x>1030</x>
-         <y>370</y>
-         <width>80</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
       <widget class="QWidget" name="optionsWidget" native="true">
        <property name="geometry">
         <rect>
-         <x>420</x>
-         <y>180</y>
+         <x>460</x>
+         <y>20</y>
          <width>111</width>
-         <height>201</height>
+         <height>321</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -83,16 +70,57 @@ border-radius: 10px;
           <height>41</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+border: 1px solid rgb(99, 180, 181);
+font: 600 13pt &quot;Segoe UI&quot;;
+color: white;
+}
+QPushButton::hover
+{
+background-color: rgb(57, 57, 57);
+}</string>
+        </property>
         <property name="text">
-         <string>files</string>
+         <string>Files</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="openLink">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>40</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+border: 1px solid rgb(99, 180, 181);
+font: 600 13pt &quot;Segoe UI&quot;;
+color: white;
+}
+QPushButton::hover
+{
+background-color: rgb(57, 57, 57);
+}</string>
+        </property>
+        <property name="text">
+         <string>Open Link</string>
         </property>
        </widget>
       </widget>
       <widget class="QWidget" name="filesWidget" native="true">
        <property name="geometry">
         <rect>
-         <x>580</x>
-         <y>200</y>
+         <x>570</x>
+         <y>20</y>
          <width>181</width>
          <height>31</height>
         </rect>
@@ -106,10 +134,44 @@ border-radius: 10px;
           <height>31</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+border: 1px solid rgb(99, 180, 181);
+font: 600 13pt &quot;Segoe UI&quot;;
+color: white;
+}
+QPushButton::hover
+{
+background-color: rgb(57, 57, 57);
+}</string>
+        </property>
         <property name="text">
          <string>File Explorer</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QLineEdit" name="openLinkLine">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>60</y>
+         <width>181</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+border: 1px solid rgb(99, 180, 181);
+font: 600 13pt &quot;Segoe UI&quot;;
+color: white;
+}</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tablesWidget" native="true">
@@ -374,9 +436,9 @@ background-color: rgba(0,0,0,240);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">QScrollArea#scrollArea
+       <string notr="true">QScrollArea#scrollAreaC
 {
-background:rgba(0,0,0,0);
+background-color: rgba(0,0,0,240);
 }</string>
       </property>
       <property name="frameShape">
@@ -396,14 +458,14 @@ background:rgba(0,0,0,0);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1189</width>
+         <width>1185</width>
          <height>459</height>
         </rect>
        </property>
        <property name="styleSheet">
         <string notr="true">QWidget#scrollAreaWidgetContents
 {
-background:rgba(0,0,0,0);
+background-color: rgba(0,0,0,240);
 }</string>
        </property>
       </widget>
@@ -417,7 +479,20 @@ background:rgba(0,0,0,0);
         <height>41</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit#searchPath
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+}
+</string>
+      </property>
       <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
        <string/>
       </property>
      </widget>
@@ -426,35 +501,77 @@ background:rgba(0,0,0,0);
        <rect>
         <x>200</x>
         <y>0</y>
-        <width>51</width>
+        <width>101</width>
         <height>41</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
+      </property>
       <property name="text">
-       <string>GetTree</string>
+       <string>Get Files Tree</string>
       </property>
      </widget>
      <widget class="QPushButton" name="createFile">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>440</x>
         <y>0</y>
-        <width>61</width>
+        <width>81</width>
         <height>41</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
+      </property>
       <property name="text">
-       <string>Create</string>
+       <string>Create File</string>
       </property>
      </widget>
      <widget class="QPushButton" name="deleteFile">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>520</x>
         <y>0</y>
         <width>91</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
       </property>
       <property name="text">
        <string>Delete File</string>
@@ -463,11 +580,25 @@ background:rgba(0,0,0,0);
      <widget class="QPushButton" name="deleteDir">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>610</x>
         <y>0</y>
         <width>91</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
       </property>
       <property name="text">
        <string>Delete Dir</string>
@@ -476,11 +607,25 @@ background:rgba(0,0,0,0);
      <widget class="QPushButton" name="deleteDir_2">
       <property name="geometry">
        <rect>
-        <x>430</x>
+        <x>300</x>
         <y>0</y>
-        <width>111</width>
+        <width>141</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
       </property>
       <property name="text">
        <string>Get Folders y Files</string>
@@ -489,11 +634,25 @@ background:rgba(0,0,0,0);
      <widget class="QPushButton" name="copyFile">
       <property name="geometry">
        <rect>
-        <x>600</x>
+        <x>700</x>
         <y>0</y>
         <width>101</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
       </property>
       <property name="text">
        <string>Copy File</string>
@@ -502,14 +661,108 @@ background:rgba(0,0,0,0);
      <widget class="QPushButton" name="inputFile">
       <property name="geometry">
        <rect>
-        <x>700</x>
+        <x>800</x>
         <y>0</y>
-        <width>101</width>
+        <width>141</width>
         <height>41</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
+      </property>
       <property name="text">
        <string>Input File to Client</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SaveFile">
+      <property name="geometry">
+       <rect>
+        <x>515</x>
+        <y>275</y>
+        <width>151</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#SaveFile
+{
+background-color: rgba(48, 186, 45, 200);
+color: black;
+border-radius: 10px;
+font: 600 14pt &quot;Segoe UI&quot;;
+}
+QPushButton#SaveFile::hover
+{
+background-color: rgb(115, 255, 84);
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Save File</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="downloadFileText">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>220</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#downloadFileText
+{
+background-color: rgba(0,0,0,190);
+border-radius: 10px;
+font: 600 15pt &quot;Segoe UI&quot;;
+color: white;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Downloading file...</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="backToMain">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>5</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+background-color: rgb(77, 77, 77);
+color: white;
+font: 12pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(99, 180, 181);
+border-radius: 10px;
+}
+QPushButton::hover
+{
+background-color: rgb(43, 43, 43);
+}</string>
+      </property>
+      <property name="text">
+       <string>&lt;- Back</string>
       </property>
      </widget>
     </widget>

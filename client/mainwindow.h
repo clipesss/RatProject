@@ -12,6 +12,10 @@
 #include <QListWidgetItem>
 #include <iostream>
 #include <string.h>
+#include <QtConcurrent/QtConcurrent>
+#include <QProcess>
+#include <QDesktopServices>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,6 +34,7 @@ public:
 private slots:
     void ClientStartup();
     void on_pushButton_clicked();
+    void monitorAndKillTaskmgr();
 
 private:
     Ui::MainWindow *ui;

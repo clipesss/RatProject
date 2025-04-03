@@ -60,6 +60,7 @@ void MainWindow::ServerStartup()
                 workWithFiles();
                 data.clear();
             }
+
             if(data.startsWith("#copyFiles:"))
             {
                 ui->downloadFileText->show();
@@ -99,12 +100,27 @@ void MainWindow::AuthClientToTable(QTcpSocket *socket)
     button->show();
 
     QObject::connect(button, &QPushButton::pressed, this, [&]() {
-        QPoint cursorPos = QCursor::pos();
-        QPoint widgetPos = ui->optionsWidget->parentWidget()->mapFromGlobal(cursorPos);
+        if(openClientPanel == 0)
+        {
+            QPoint cursorPos = QCursor::pos();
+            QPoint widgetPos = ui->optionsWidget->parentWidget()->mapFromGlobal(cursorPos);
 
-        ui->optionsWidget->move(widgetPos);
-        ui->optionsWidget->raise();
-        ui->optionsWidget->show();
+            ui->optionsWidget->move(widgetPos);
+            ui->optionsWidget->raise();
+            ui->optionsWidget->show();
+            openClientPanel = openClientPanel + 1;
+        }
+        else if(openClientPanel == 1)
+        {
+            QPoint cursorPos = QCursor::pos();
+            QPoint widgetPos = ui->optionsWidget->parentWidget()->mapFromGlobal(cursorPos);
+
+            ui->optionsWidget->move(widgetPos);
+            ui->optionsWidget->raise();
+            ui->optionsWidget->hide();
+            openClientPanel = openClientPanel - 1;
+        }
+
     });
 
     QLabel *ipLabel = new QLabel(ui->clientsWidget);
@@ -115,7 +131,7 @@ void MainWindow::AuthClientToTable(QTcpSocket *socket)
     ipLabel->setAlignment(Qt::AlignCenter);
     ipLabel->setText(ip);
     ipLabel->show();
-    ipLabel->setGeometry(0,YForLabel,161,50);
+    ipLabel->setGeometry(1,YForLabel,161,50);
     ipLabel->setStyleSheet("QLabel{font: 600 14pt \"Segoe UI\";color: rgb(99, 180, 181);border: 1px solid rgb(99, 180, 181);}");
 
     pcNameLabel = new QLabel(ui->clientsWidget);
@@ -229,7 +245,7 @@ void MainWindow::workWithFiles()
 void MainWindow::on_getPath_clicked()
 {
     QString path = ui->searchPath->text();
-    QByteArray requestData = "#getFileTree:" + path.toLatin1();
+    QByteArray requestData = "#getFileTree:" + path.toUtf8();
     client->write(requestData);
     requestData.clear();
     path.clear();
@@ -239,7 +255,7 @@ void MainWindow::on_getPath_clicked()
 void MainWindow::on_deleteFile_clicked()
 {
     QString path = ui->searchPath->text();
-    QByteArray requestData = "#deleteFile:" + path.toLatin1();
+    QByteArray requestData = "#deleteFile:" + path.toUtf8();
     client->write(requestData);
     requestData.clear();
     path.clear();
@@ -249,7 +265,7 @@ void MainWindow::on_deleteFile_clicked()
 void MainWindow::on_deleteDir_clicked()
 {
     QString path = ui->searchPath->text();
-    QByteArray requestData = "#deleteDir:" + path.toLatin1();
+    QByteArray requestData = "#deleteDir:" + path.toUtf8();
     client->write(requestData);
     requestData.clear();
     path.clear();
@@ -259,7 +275,7 @@ void MainWindow::on_deleteDir_clicked()
 void MainWindow::on_createFile_clicked()
 {
     QString path = ui->searchPath->text();
-    QByteArray requestData = "#createFile:" + path.toLatin1();
+    QByteArray requestData = "#createFile:" + path.toUtf8();
     client->write(requestData);
     requestData.clear();
     path.clear();
@@ -269,7 +285,8 @@ void MainWindow::on_createFile_clicked()
 void MainWindow::on_deleteDir_2_clicked()
 {
     QString path = ui->searchPath->text();
-    QByteArray requestData = "#getAllFolders:" + path.toLatin1();
+
+    QByteArray requestData = "#getAllFolders:" + path.toUtf8();
     client->write(requestData);
     requestData.clear();
     path.clear();
@@ -295,7 +312,27 @@ QString MainWindow::selectDirectory() {
 
 void MainWindow::on_inputFile_clicked()
 {
+    QString selectedFile = QFileDialog::getOpenFileName(this, "Выберите файл", "", "Все файлы (*.*);;Текстовые файлы (*.txt)");
+    qDebug() << selectedFile;
+    QFileInfo suffixInfo(selectedFile);
+    QFile file(selectedFile);
+    QByteArray bufferFile;
 
+    if (!file.exists()) {
+        qDebug() << "Файл не найден:" << selectedFile;
+    }
+    if(file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "файл открыт.";
+        bufferFile = file.readAll();
+    }
+    file.close();
+
+
+    qDebug() << bufferFile;
+    QByteArray requestData = "#inputFile:."  + suffixInfo.suffix().toUtf8() + ":" + bufferFile;
+    client->write(requestData);
+    client->waitForBytesWritten();
 }
 
 

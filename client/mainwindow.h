@@ -40,5 +40,7 @@ private:
     Ui::MainWindow *ui;
     QTcpSocket *socket;
     QString SelectedPath;
+
+    bool isTimerCreated = 0;
 };
 #endif // MAINWINDOW_H

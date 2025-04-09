@@ -115,6 +115,33 @@ background-color: rgb(57, 57, 57);
          <string>Open Link</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="screenOpen">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>80</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton
+{
+background-color:rgb(83, 83, 83);
+border-radius: 10px;
+border: 1px solid rgb(99, 180, 181);
+font: 600 13pt &quot;Segoe UI&quot;;
+color: white;
+}
+QPushButton::hover
+{
+background-color: rgb(57, 57, 57);
+}</string>
+        </property>
+        <property name="text">
+         <string>Screen Check</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="filesWidget" native="true">
        <property name="geometry">

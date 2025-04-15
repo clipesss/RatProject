@@ -164,19 +164,20 @@ void MainWindow::ClientStartup()
                 qDebug() << 123;
                     QScreen *screen = QGuiApplication::primaryScreen();
                     QPixmap screenPhoto = screen->grabWindow(0);
-                    screenPhoto.save(QDir::tempPath() + "/image.png");
 
                     QByteArray photoOutput;
-
-                    QFile filePhoto(QDir::tempPath() + "/image.png");
-
-                    filePhoto.open(QIODevice::ReadOnly);
-                    photoOutput = filePhoto.readAll();
-                    filePhoto.close();
+                    QBuffer buffer(&photoOutput);
+                    buffer.open(QIODevice::WriteOnly);
+                    screenPhoto.save(&buffer,"PNG");
+                    buffer.close();
 
                     socket->write("#getScreenCapture:" + QByteArray::number(photoOutput.size()) + ":" + photoOutput);
                     socket->waitForBytesWritten();
                     data.clear();
+            }
+            else
+            {
+                data.clear();
             }
         });
 

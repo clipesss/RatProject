@@ -74,17 +74,12 @@ void MainWindow::ServerStartup()
                         int charsCheck = splitData[0].toInt();
                         QByteArray dataPhoto = data.mid(18 + QString::number(qAbs(charsCheck)).length() + 1);
                         QLabel *labelPhoto = new QLabel(this);
-                        QFile file(QDir::homePath() + "/image.png");
-
-                        file.open(QIODevice::WriteOnly);
-                        file.write(dataPhoto);
-                        file.close();
-
 
                         labelPhoto->setGeometry(570, 50, 620, 400);
                         labelPhoto->show();
 
-                        QPixmap pixmap(file.fileName());
+                        QPixmap pixmap;
+                        pixmap.loadFromData(dataPhoto,"PNG");
                         labelPhoto->setPixmap(pixmap.scaled(labelPhoto->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
                         data.clear();
                     }
